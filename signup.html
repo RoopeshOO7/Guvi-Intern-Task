@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup | MIM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(to right, #1f4037, #99f2c8);
+      font-family: Arial, sans-serif;
+    }
+    .signup-box {
+      max-width: 450px;
+      margin: 80px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    .btn-signup {
+      width: 100%;
+      background-color: #1f4037;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-box">
+    <h2>Signup to MIM</h2>
+    <form id="signupForm">
+      <div class="mb-3">
+        <label>Name</label>
+        <input type="text" id="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Email</label>
+        <input type="email" id="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Date of Birth</label>
+        <input type="date" id="dob" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Phone Number</label>
+        <input type="text" id="phone" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label>Password</label>
+        <input type="password" id="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-signup">Signup</button>
+    </form>
+  </div>
+
+  <script>
+    $('#signupForm').submit(function(e) {
+      e.preventDefault();
+
+      const user = {
+        username: $('#username').val().trim(),
+        email: $('#email').val().trim(),
+        dob: $('#dob').val(),
+        phone: $('#phone').val().trim(),
+        password: $('#password').val()
+      };
+
+      $.ajax({
+        url: 'php/signup.php',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(user),
+        success: function(response) {
+          if (response.status === 'success') {
+            alert('Signup successful! Redirecting to login.');
+            window.location.href = 'login.html';
+          } else {
+            alert(response.message || 'Signup failed.');
+          }
+        },
+        error: function() {
+          alert('Server error. Please try again.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
